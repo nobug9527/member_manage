@@ -1,0 +1,93 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>消费记录</title>
+    <script src="~/js/jquery-1.8.2.min.js"></script>
+    <script src="~/js/jquery1.11.3.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: url("../Images/timg.jpg") no-repeat;
+            background-size: cover;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+        })
+
+        function changetype() {
+            value = $("#operatype").val();
+            $.ajax({
+                url: "/Record/List" + "?type=" + value,
+                type: "get",
+                async: false,
+                success: function (result) {
+                    //var obj = eval('(' + result + ')');
+                    //$("input[name='jz_endtime']").val(obj.endtime);
+                    //$("input[name='jz_totaltime']").val(obj.usetime)
+                    //$("input[name='jz_money']").val(obj.totalmoney)
+                    $("#RecordList").html(result);
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#menu">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">摇钱树会员管理</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Commodity/Index">商品消费</a></li>
+                    <li><a href="#">商品管理</a></li>
+                    <li><a href="/Member/Index">会员管理</a></li>
+                    <li class="active"><a href="/Record/Index">消费记录</a></li>
+                    <li><a href="/Income/Index">营业收入</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <br />
+    <div class="container">
+        <select class="form-control" style="width:33%" id="operatype" onchange="changetype()">
+            <option value="">--全部--</option>
+            <option value="消费">--消费--</option>
+            <option value="充值">--充值--</option>
+        </select>
+        <br />
+        <div id="RecordList">
+            @Html.Action("List", "Record")
+        </div>
+    </div>
+</body>
+</html>

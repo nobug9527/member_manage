@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>memberlist</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div>
+        <table class="table table-bordered table-hover">
+
+            <tr>
+                <th>用户编号</th>
+                <th>用户名</th>
+                <th>手机号</th>
+                <th>生日</th>
+                <th>性别</th>
+                <th>剩余金额</th>
+                <th>剩余次数</th>
+                <th>操作</th>
+            </tr>
+
+            @foreach (var member in @Model)
+            {
+
+
+                <tr class="info">
+                    <td>@member.no</td>
+                    <td>@member.name</td>
+                    <td>@member.phonenum</td>
+                    <td>@member.born</td>
+                    <td>@member.gender</td>
+                    <td>@member.balance</td>
+                    <td>@member.sycs</td>
+                    <td>
+                        <a href="/Home/Index"><input type="button" value="修改" class="btn btn-primary" /></a>
+                        <input type="button" value="充值" class="btn btn-info" />
+                        <input type="button" value="注销" class="btn btn-warning" />
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>

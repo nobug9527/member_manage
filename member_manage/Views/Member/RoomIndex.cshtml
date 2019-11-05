@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RoomIndex</title>
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/js/jquery1.11.3.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        //基本初始化
+        $('#sw-content input').bootstrapSwitch();
+
+        //手动设置按钮状态
+        $('#sw-content input').bootstrapSwitch('state', false);
+
+        //点击按钮切换 switch
+        $('#oper-btn-sw').click(function () {
+            $('#sw-content input').bootstrapSwitch('toggleState');
+        });
+
+        //点击触发事件，监听按钮状态
+        $('#sw-content input').on('switchChange.bootstrapSwitch', function (event, state) {
+
+            //内置对象、内置属性
+            console.log(event);
+
+            //获取状态
+            console.log(state);
+        });
+    })
+
+    </script>
+
+</head>
+<body>
+    <div>
+        <div id="operatebar">
+            <button id="oper-btn-sw" class="btn btn-default">切换状态</button>
+        </div>
+        <div id="sw-content">
+            <input type="checkbox" class="make-switch" checked data-on-color="default" data-off-color="primary">
+        </div>
+    </div>
+</body>
+</html>

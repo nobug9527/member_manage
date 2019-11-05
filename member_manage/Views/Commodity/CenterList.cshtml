@@ -1,0 +1,396 @@
+﻿<link rel="dns-prefetch" href="http://cdn01.weipaitang.com/" />
+<style type="text/css">
+    #contentbox {
+        height: 100%;
+        background-color: #FFF;
+    }
+
+    .menu {
+        position: relative;
+        top: 0px;
+        bottom: 0;
+        background-color: #F8F8F8;
+        display: inline;
+        float: left;
+        width:10%
+    }
+
+        .menu .menuItem {
+            height: 45px;
+            width: 100%;
+            font-size: 15px;
+            line-height: 45px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+            .menu .menuItem.selected {
+                color: #169ADA;
+                background-color: #FFF;
+            }
+
+    .categoryBox {
+        /*margin-left: 2.25rem;*/
+        height: 99.9%;
+        overflow: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+        top: 0px;
+    }
+
+        .categoryBox .categoryContent .categoryList {
+            clear: both;
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+            .categoryBox .categoryContent .categoryList:last-child {
+                padding-bottom: 300px;
+            }
+
+    .categoryContent {
+        float: left;
+        height:99%;
+    }
+
+    .categoryBox .categoryContent .categoryList .title {
+        position: relative;
+        width: 90%;
+        margin: 0 5%;
+        font-size: 14px;
+        color: #424242;
+        line-height: 40px;
+        text-align: left;
+        text-indent: 7px;
+    }
+
+        .categoryBox .categoryContent .categoryList .title:before {
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 13px;
+            width: 3px;
+            height: 14px;
+            background-color: #169ADA;
+        }
+
+        .categoryBox .categoryContent .categoryList .title .all {
+            float: right;
+            position: relative;
+            color: #b4b4b4;
+            padding-right: 12px;
+            font-size: 12px;
+        }
+
+            .categoryBox .categoryContent .categoryList .title .all:after {
+                position: absolute;
+                content: "\E629";
+                font-family: "wptFont";
+                width: 10px;
+                right: 0;
+                font-size: 10px;
+            }
+
+    .categoryBox .categoryContent .categoryList .categoryBox {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+        .categoryBox .categoryContent .categoryList .categoryBox .categoryItem {
+            float: left;
+            height: 30px;
+            line-height: 30px;
+            width: 23.33%;
+            padding: 70px 5% 5px;
+            background-size: 63px;
+            background-repeat: no-repeat;
+            background-position: center 5px;
+        }
+
+            .categoryBox .categoryContent .categoryList .categoryBox .categoryItem .itemIcon {
+                position: absolute;
+                top: 5px;
+                left: 50%;
+                width: 64px;
+                height: 64px;
+                color: #F56300;
+                font-size: 14px;
+                cursor: pointer;
+                line-height: 45px;
+                margin-left: -32px;
+                text-align: center;
+                background-color: #F4F4F4;
+            }
+
+            .categoryBox .categoryContent .categoryList .categoryBox .categoryItem:nth-child(3) .itemIcon {
+                color: #169ADA;
+            }
+
+            .categoryBox .categoryContent .categoryList .categoryBox .categoryItem:nth-child(4) .itemIcon {
+                color: #F4CE14;
+                font-size: 28px;
+            }
+
+            .categoryBox .categoryContent .categoryList .categoryBox .categoryItem .text {
+                position: absolute;
+                left: 50%;
+                width: 64px;
+                cursor: pointer;
+                margin-left: -32px;
+            }
+
+        .categoryBox .categoryContent .categoryList .categoryBox:before {
+            position: absolute;
+            left: 5%;
+            bottom: 0;
+            content: '';
+            width: 90%;
+            height: 1px;
+            background-color: #EEE;
+            transform: scaleY(0.5);
+            -webkit-transform: scaleY(0.5);
+        }
+
+    .categoryBox .categoryContent .categoryList .categoryItem {
+        position: relative;
+        float: left;
+        height: 105px;
+        line-height: 100px;
+        width: 33.33%;
+        padding: 0 0 5px;
+        margin: 20px;
+    }
+
+        .categoryBox .categoryContent .categoryList .categoryItem .categoryIcon {
+            position: relative;
+            background-size: 63px;
+            background-repeat: no-repeat;
+            background-position: center 5px;
+            width: 100%;
+            height: 70px;
+        }
+
+        .categoryBox .categoryContent .categoryList .categoryItem .cursorArea {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            width: 64px;
+            height: 64px;
+            cursor: pointer;
+            overflow: hidden;
+            margin-left: -32px;
+        }
+
+            .categoryBox .categoryContent .categoryList .categoryItem .cursorArea .new {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 74px;
+                color: #FFF;
+                height: 18px;
+                font-size: 20px;
+                line-height: 14px;
+                margin-left: -60px;
+                background-color: #E01F0B;
+                transform: rotate(-45deg) scale(0.5);
+                -webkit-transform: rotate(-45deg) scale(0.5);
+            }
+
+        .categoryBox .categoryContent .categoryList .categoryItem.clicked {
+            opacity: 0.7;
+        }
+
+    .categoryBox .categoryContent .categoryList .categoryBox .categoryItem {
+        padding: 38px 5% 18px;
+    }
+
+    .categoryBox .categoryContent .categoryList .categoryItem .text {
+        height: 20px;
+        line-height: 20px;
+        margin: 5px 0;
+        overflow: hidden;
+        font-size: 14px;
+        display: block;
+    }
+
+    .categoryBox .categoryContent .categoryList .categoryItem.official {
+        clear: left;
+        width: 90%;
+        margin: 5px 5%;
+        height: auto;
+        padding: 37.6% 0 0;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .wptAbMask {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        z-index: 99995;
+        background-color: #FFF;
+    }
+</style>
+<script src="~/js/zepto.js"></script>
+<script type="text/javascript">
+        !function () {
+            function a() {
+                var clientWidth = document.documentElement.clientWidth > 640 ? 640 : document.documentElement.clientWidth;
+                document.documentElement.style.fontSize = clientWidth / 7.5 + "px";
+
+                //适应字体调整
+                var div = document.createElement("div");
+                div.style.width = "7.5rem";
+                document.documentElement.appendChild(div);
+                document.documentElement.style.fontSize = document.documentElement.style.fontSize.replace("px", "") * clientWidth / div.clientWidth + "px";
+                document.documentElement.removeChild(div);
+            }
+            var b = null;
+            window.addEventListener("resize", function () {
+                clearTimeout(b), b = setTimeout(a, 300)
+            }, !1), a()
+        }(window);
+</script>
+
+<script src="~/js/zepto.picLazyLoad.min.js"></script>
+<script type="text/javascript">
+        var doing = true;
+        var category = -1;
+
+        //滚动触发菜单栏
+        function pageScroll() {
+            var _scrollTop = $$(".categoryBox").scrollTop();
+            var _height = -(document.documentElement.clientHeight || $$(window).height()) / 2 + 25;
+            var index = 1;
+            $$(".categoryList").each(function () {
+                _height += $$(this).height();
+                if (_height > _scrollTop) {
+                    return;
+                }
+                index++;
+            });
+            $$(".menu .menuItem").removeClass("selected");
+            $$(".menu .menuItem:nth-child(" + index + ")").addClass("selected");
+        }
+
+        $$(function () {
+            var _category = window.location.search.match(/[\?&]category=(\d+)&?/);
+            if (null != _category) {
+                category = _category[1];
+            }
+
+            //点击菜单定位
+            $$(".menu").on("click", ".menuItem", function () {
+                doing = false;
+                var self = $$(this);
+                if (!self.hasClass("selected")) {
+                    category = self.attr("category");
+                    $$(".menu .menuItem").removeClass("selected");
+                    self.addClass("selected");
+                    $$(".categoryBox").scrollTop(self.attr("scroll"));
+                }
+                setTimeout(function () {
+                    doing = true;
+                }, 100)
+            });
+
+            //进入分类
+            $$(".categoryItem").on("click", function () {
+                var url = $$(this).data("url");
+                if (!url) {
+                    return false;
+                }
+                $$(this).addClass("clicked");
+                setTimeout(function () {
+                    $$(this).removeClass('clicked');
+                }, 1000);
+                if (!$$.os.android || ignorePhoneModel.indexOf(getPhoneModel()) == -1) {
+                    var scrollTop = $$("body").scrollTop();
+                    history.replaceState({ scrollTop: scrollTop }, document.title, "?category=" + category);
+                }
+                var secCategory = $$(this).data('seccategory');
+                //            wptRedirect(url, 200);
+            });
+
+            //回退定位高度
+            if (!$$.os.android || ignorePhoneModel.indexOf(getPhoneModel()) == -1) {
+                window.onpopstate = function (event) {
+                    if (null != event.state && 'undefined' != typeof event.state.scrollTop) {
+                        $$("body").scrollTop(event.state.scrollTop);
+                    }
+                };
+            }
+
+            // 初始化左边栏选项
+            $$(".menu .menuItem[category='" + category + "']").addClass('selected');
+            $$(".categoryList[category='" + category + "']").show();
+
+            //计算各分类高度
+            var _dataHeight = -50;
+            $$(".categoryList").each(function (i, item) {
+                if (i == 0) {
+                    $$(".menu .menuItem:nth-child(" + (1) + ")").attr("scroll", 0);
+                } else {
+                    $$(".menu .menuItem:nth-child(" + (i + 1) + ")").attr("scroll", _dataHeight);
+                }
+                _dataHeight += $$(item).height();
+            });
+
+            //页面滚动
+            $$(".categoryBox").on('scroll', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                if (doing) {
+                    pageScroll();
+                }
+            });
+
+            pageScroll();
+
+            //加载lazy图片
+            $$.picLazyLoad({
+                seletctor: ".lazyLoad",
+                threshold: $$(window).height() * 1.5,
+                scrollArea: $$(".categoryBox")
+            });
+
+            $$(".menuItem[category='-1']").click();
+        });
+</script>
+<script>
+    function addgood() {
+        
+    }
+</script>
+<div class="menu">
+    @foreach (var item in @Model)
+    {
+        <div class="menuItem" category=@item[0] statisticevent="click">@item[1]</div>
+    }
+    
+</div>
+<div class="categoryBox">
+    <div class="categoryContent">
+        @foreach (var item in @Model)
+        {
+            <div class="categoryList" category=@item[0]>
+                <div class="title">@item[1]</div>
+                @foreach (var item1 in item[2].Rows)
+                {
+                    <div class="categoryItem" statisticevent="click" onclick="addgood()">
+                        <div class="categoryIcon lazyLoad" data-original="/Images/乡巴佬.jpg"></div>
+                        <div class="cursorArea"></div>
+                        <span class="text">@item1["goodsname"]</span>
+                        <span class="text">单价:@item1["price"]</span>
+                        <span class="text">剩余:@item1["allowance"]</span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

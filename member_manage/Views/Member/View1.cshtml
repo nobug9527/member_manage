@@ -1,0 +1,48 @@
+﻿@model ViewModel.memberVO
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>test</title>
+    <script src="~/js/jquery-1.8.2.min.js"></script>
+    @*<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>*@
+
+
+
+    <script type="text/javascript">
+        function test() {
+             $.ajax({
+                 url: "tools/submit_ajax.ashx?action=checkphone",
+                 type: "Get",
+
+                 async: false,
+                 success: function (result) {
+                     var obj = eval('(' + result + ')');
+                     if (obj.status == "0")
+                         alert("1111111");
+                     else
+                         alert("2222222");
+
+                }
+            })
+        }
+    </script>
+
+</head>
+<body>
+        <div>
+
+        </div>
+
+   
+
+</body>
+
+</html>

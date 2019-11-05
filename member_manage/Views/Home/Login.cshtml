@@ -1,0 +1,108 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/js/jquery1.11.3.min.js"></script>
+    <style>
+        body {
+            margin-left: auto;
+            margin-right: auto;
+            margin-TOP: 100PX;
+            width: 20em;
+            background:url("../Images/timg.jpg") no-repeat;
+            background-size:auto;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+
+
+        $(document).ready(function () {
+            $("#username").focus(function () {
+                $("#login_msg1").html("");
+            })
+            $("#password").focus(function () {
+                $("#login_msg2").html("");
+            })
+        })
+
+        function checklogin() {
+            var panduan = true;
+            var username = $("#username").val();
+            var password = $("#password").val();
+            if (username == "" || username == null) {
+                $("#login_msg1").html("用户名不能为空");
+                panduan = false;
+                return panduan;
+            }
+            else if (password == "" || password == null) {
+                $("#login_msg2").html("密码不能为空");
+                return false;
+            }
+            else
+            {
+                $.ajax({
+                    url: "/tools/submit_ajax.ashx?action=login",
+                    type: "post",
+                    data: { username: username, password: password },
+                    async: false,
+                    success: function (result) {
+                        var obj = eval('(' + result + ')');
+                        if (obj.status == 1) {
+                            panduan = true;
+                        }
+                        else if (obj.status == 2) {
+                            panduan = false;
+                            $("#login_msg2").html("密码错误");
+                        } else {
+                            panduan = false;
+                            $("#login_msg1").html("帐号不存在");
+                        }
+                    }
+                })
+                return panduan;
+            }
+            
+        }
+
+
+    </script>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+        {
+
+       <!--用户名输入框-->
+
+            <div class="input-group">
+
+                <span class="input-group-addon" id="basic-addon1">@@</span>
+                <input id="username" type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="basic-addon1">
+            </div>
+            <span id="login_msg1" style="color:red"></span>
+            <br>
+
+        <!--密码输入框-->
+
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">@@</span>
+                <input id="password" type="password" name="password" class="form-control" placeholder="密码" aria-describedby="basic-addon1">
+            </div>
+            <span id="login_msg2" style="color:red"></span>
+            <br>
+
+        <!--登陆按钮-->
+            <button type="submit" style="width:280px;" class="btn btn-default" onclick="return checklogin()">登 录</button>
+        }
+    </div>
+</body>
+</html>

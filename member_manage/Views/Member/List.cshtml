@@ -1,0 +1,71 @@
+﻿<table class="table table-bordered table-hover" id="list1" style="table-layout:fixed">
+
+        <tr>
+            <th width="5%">序号</th>
+            <th width="10%">会员卡号</th>
+            <th width="10%">用户名</th>
+            <th width="25%">手机号</th>
+            <th width="5%">性别</th>
+            <th width="5%">剩余金额</th>
+            <th width="5%">剩余次数</th>
+            <th width="15%">消费开始时间</th>
+            <th width="20%">操作</th>
+        </tr>
+
+    @*<tr>
+        <td>11</td>
+        <td>11</td>
+        <td>11</td>
+        <td>11</td>
+        <td>11</td>
+        <td>11</td>
+        <td>11</td>
+        <td>11</td>
+        <td>11</td>
+    </tr>*@
+        @foreach (var member in @Model)
+        {
+            // data-toggle="modal" data-target="#myModal4"
+            <tr class="info">
+                <td style="word-wrap:break-word;word-break:break-all;">@member.xuhao</td>
+                <td style="word-wrap:break-word;word-break:break-all;">@member.no</td>
+                <td style="word-wrap:break-word;word-break:break-all;">@member.name</td>
+                <td style="word-wrap:break-word;word-break:break-all;">@member.phonenum</td>
+                <td style="word-wrap:break-word;word-break:break-all;">@member.gender</td>
+                <td style="word-wrap:break-word;word-break:break-all;">@member.balance</td>
+                <td style="word-wrap:break-word;word-break:break-all;">@member.sycs</td>
+                <td style="word-wrap:break-word;word-break:break-all;"><span class="isuse">@member.starttime</span></td>
+                <td style="word-wrap:break-word;word-break:break-all;">
+                    <div class="btn-group">
+                        <input type="button" value="消费" data-toggle="modal" onclick="return xiaofei(@member.no,'@member.name',@member.phonenum,@member.balance,@member.sycs,'@member.starttime')">
+                        <input type="button" value="结账" data-toggle="modal" data-target="#myModal5" onclick="getjiezhang(@member.no,'@member.starttime',@member.phonenum,'@member.name',@member.balance)" />
+                        <input type="button" value="充值" class="btn btn-info" data-toggle="modal" data-target="#myModal2" onclick="invest(@member.no,'@member.name',@member.phonenum,@member.balance,@member.sycs)" />
+                        <input type="button" value="修改" class="btn btn-warning" data-toggle="modal" data-target="#myModal1" onclick="modify(@member.no)" />
+                        <input type="button" value="记录" class="btn btn-success" data-toggle="modal" data-target="#myModal6" onclick="clickrecord(@member.no)" />
+                        @Ajax.ActionLink("注销", "Lock", "Member", new { id = @member.no }, new AjaxOptions() { UpdateTargetId = "memberlist", Confirm = "确定注销吗？", OnSuccess = "HideAdd()" }, new { Class = "btn btn-danger" })
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+<div class="text-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li>
+                <a href="/Member/Index?pageindex=@ViewBag.paper.Prev&info=@ViewBag.paper.condition["info"]">
+                    <span aria-hidden="true">上一页</span>
+                </a>
+            </li>
+            @for (int i = ViewBag.paper.LinkStart; i <= ViewBag.paper.LinkEnd; i++)
+            {
+                <li @((i == ViewBag.paper.PageIndex) ? Html.Raw("class='active'") : null)>@Html.ActionLink(@i + "", "Index", new { pageindex = @i, info = @ViewBag.paper.condition["info"] }) </li>
+            }
+            <li>
+                <a href="/Member/Index?pageindex=@ViewBag.paper.Next&info=@ViewBag.paper.condition["info"]">
+                    <span aria-hidden="true">下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

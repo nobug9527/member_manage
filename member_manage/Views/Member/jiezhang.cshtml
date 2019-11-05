@@ -1,0 +1,68 @@
+﻿<div id="jiezhang">
+    <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">结账</h4>
+                </div>
+
+                @using (Ajax.BeginForm("JieZhang", "Member", new AjaxOptions() { UpdateTargetId = "memberlist", OnSuccess = "HideAdd()" }))
+                {
+                    <input type="hidden" name="jz_no" />
+                    <input type="hidden" name="jz_balance"/>
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            
+                            <tr>
+                                <td>姓名</td>
+                                <td><input name="jz_name" type="text" class="form-control" readonly/></td>
+                            </tr>
+
+                            <tr>
+                                <td>电话</td>
+                                <td><input name="jz_phonenum" type="text" class="form-control" readonly /></td>
+                            </tr>
+
+                            <tr>
+                                <td>消费开始时间</td>
+                                <td><input name="jz_starttime" type="text" class="form-control" readonly /></td>
+                            </tr>
+
+                            <tr>
+                                <td>消费结束时间</td>
+                                <td><input name="jz_endtime" type="text" class="form-control" readonly /></td>
+                            </tr>
+
+                            <tr>
+                                <td>共计时间</td>
+                                <td><input name="jz_totaltime" type="text" class="form-control" readonly /></td>
+                            </tr>
+
+                            <tr>
+                                <td>消费金额</td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">¥</div>
+                                            <input type="text" class="form-control" id="jz_money" name="jz_money" readonly>
+                                            <div class="input-group-addon">元</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <label style="color:red" id="jz_msg"></label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary" onclick="return checkjiezhang()">确认结账</button>
+                    </div>
+                }
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+

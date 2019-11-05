@@ -1,0 +1,286 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>商品消费</title>
+
+    <script src="~/js/jquery1.11.3.min.js"></script>
+
+    <script src="~/js/bootstrap.min.js"></script>
+
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <style type="text/css">
+        html,body {
+        width:100%;
+        height:100%;
+        margin:0px;
+        margin:0px;
+        }
+        .center,.left,.right{
+        margin:5px;
+        padding:5px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input").focus(function(){  
+                $(this).parent().children(".input_clear").show();
+                $("#getinfomsg").html("");
+            });  
+            $("input").blur(function(){  
+                if($(this).val()=='')  
+                {  
+                    $(this).parent().children(".input_clear").hide();  
+                }  
+            });  
+            $(".input_clear").click(function(){  
+                $(this).parent().find('input').val('');
+                $("#getinfomsg").html("");
+                $("#input2").val('');
+                $("#input3").val('');
+                $("#input4").val('');
+                $(this).hide();
+            });
+        })
+
+        function getmemberinfo(e) {
+            var keyCode = null;
+            if (e.which)
+                keyCode = e.which;
+            else if (e.keyCode)
+                keyCode = e.keyCode;
+            if (keyCode == 13) {
+                $.ajax({
+                    url: "/Commodity/GetMemberInfo",
+                    type: "post",
+                    async: false,
+                    datatype:JSON,
+                    data: {
+                        getinfo: $("input[name='getinfo']").val()
+                    },
+                    success: function (result) {
+                        if (result.state == 1) {
+                            $("#input2").val(result.name);
+                            $("#input3").val(result.no);
+                            $("#input4").val(result.phone);
+                            $("#getinfomsg").html("");
+                        } else if (result.state == 2) {
+                            $("#getinfomsg").html("会员信息不存在");
+                            $("#input2").val('');
+                            $("#input3").val('');
+                            $("#input4").val('');
+                        }
+                    },
+
+                })
+            }
+        }
+    </script>
+
+
+
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#menu">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">摇钱树会员管理</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/Commodity/Index">商品消费</a></li>
+                    <li><a href="#">商品管理</a></li>
+                    <li><a href="/Member/Index">会员管理</a></li>
+                    <li><a href="/Record/Index">消费记录</a></li>
+                    <li><a href="/Income/Index">营业收入</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div style="width:90%;margin:auto;padding:5px;height:85%" class="main">
+        <div style="width:18%;height:300px;float:left" class="left">
+            <div class="form-group">
+                <label for="inpout1">会员卡号/手机号:</label><br />
+                <div style="position:relative;">
+
+                    <div style="position:absolute;right:5px;top:5px;cursor:pointer;display:none;" class="input_clear">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                    </div>
+                    <input type="text" class="form-control" id="input1" placeholder="输入会员卡号或手机号" name="getinfo" onkeypress="getmemberinfo(event)">
+                </div>
+
+                <label for="inpout2">会员姓名:</label>
+                <input type="text" class="form-control" id="input2" disabled="disabled">
+
+                <label for="inpout3">会员卡号:</label>
+                <input type="text" class="form-control" id="input3" disabled="disabled">
+
+                <label for="inpout4">会员手机:</label>
+                <input type="text" class="form-control" id="input4" disabled="disabled">
+            </div>
+            <span id="getinfomsg" style="color:red"></span>
+        </div>
+
+            <div id="contentbox" style="width:30%;height:99%;border:1px solid black;float:left;" class="center">
+                @Html.Action("CenterList","Commodity")
+            </div>
+        <div style="width:45%;height:99%;border:1px solid black;float:left" class="right">
+            <div class="shopping-car-container">
+                <div class="car-headers-menu">
+                    <div class="row">
+                        <div class="col-md-1 car-menu">
+                            <label><input type="checkbox" id="check-goods-all" /><span id="checkAll">全选</span></label>
+                        </div>
+                        <div class="col-md-3 car-menu" onclick="addcontent()">商品信息</div>
+                        <div class="col-md-3 car-menu">商品参数</div>
+                        <div class="col-md-1 car-menu">单价</div>
+                        <div class="col-md-1 car-menu">数量</div>
+                        <div class="col-md-1 car-menu">金额</div>
+                        <div class="col-md-2 car-menu">操作</div>
+                    </div>
+                </div>
+                <div class="goods-content">
+                    <!--goods display-->
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body bottom-menu-include">
+                        <div class="col-md-1 check-all-bottom bottom-menu">
+                            <label>
+                                <input type="checkbox" id="checked-all-bottom" />
+                                <span id="checkAllBottom">全选</span>
+                            </label>
+                        </div>
+                        <div class="col-md-1 bottom-menu">
+                            <span id="deleteMulty">
+                                删除
+                            </span>
+                        </div>
+                        <div class="col-md-6 bottom-menu">
+
+                        </div>
+                        <div class="col-md-2 bottom-menu">
+                            <span>已选商品 <span id="selectGoodsCount">0</span> 件</span>
+                        </div>
+                        <div class="col-md-1 bottom-menu">
+                            <span>合计：<span id="selectGoodsMoney">0.00</span></span>
+                        </div>
+                        <div class="col-md-1 bottom-menu submitData submitDis">
+                            结算
+                        </div>
+                    </div>
+                </div>
+                <!--删除确认弹框-->
+                <div class="modal fade" tabindex="-1" role="dialog" id="deleteItemTip" aria-labelledby="gridSystemModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                            </div>
+                            <div class="modal-body">
+                                确认删除此商品？
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary deleteSure">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--是否勾选商品提示-->
+                <div class="modal fade" tabindex="-1" role="dialog" id="selectItemTip" aria-labelledby="gridSystemModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                            </div>
+                            <div class="modal-body">
+                                请选择要删除的商品！
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--批量删除商品-->
+                <div class="modal fade" tabindex="-1" role="dialog" id="deleteMultyTip" aria-labelledby="gridSystemModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                            </div>
+                            <div class="modal-body">
+                                确认删除选择的商品！
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary deleteMultySure">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <link href="~/css/style.css" rel="stylesheet" />
+        <script type="text/javascript" src="~/js/jquery.min.js"></script>
+        <script type="text/javascript" src="~/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            function addcontent() {
+                var goodsHtml = '<div class="goods-item">' +
+			'<div class="panel panel-default">' +
+			'<div class="panel-body">' +
+			'<div class="col-md-1 car-goods-info">' +
+			'<label><input type="checkbox" class="goods-list-item"/></label>' +
+			'</div>' +
+			'<div class="col-md-3 car-goods-info goods-image-column">' +
+			'<img class="goods-image" src="../../Images/1.png" style="width: 100px; height: 100px;" />' +
+			'<span id="goods-info">111111111111111111111111</span>' +
+			'</div>' +
+			'<div class="col-md-3 car-goods-info goods-params">test参数</div>' +
+			'<div class="col-md-1 car-goods-info goods-price"><span>￥</span><span class="single-price">99</span></div>' +
+			'<div class="col-md-1 car-goods-info goods-counts">' +
+			'<div class="input-group">' +
+			'<div class="input-group-btn">' +
+			'<button type="button" class="btn btn-default car-decrease">-</button>' +
+			'</div>' +
+			'<input type="text" class="form-control goods-count" value="2">' +
+			'<div class="input-group-btn">' +
+			'<button type="button" class="btn btn-default car-add">+</button>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'<div class="col-md-1 car-goods-info goods-money-count"><span>￥</span><span class="single-total">198</span></div>' +
+			'<div class="col-md-2 car-goods-info goods-operate">' +
+			'<button type="button" class="btn btn-danger item-delete">删除</button>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</div>'
+                $('.goods-content').append(goodsHtml)
+                $.getScript("../../js/script.js")
+            }
+        </script>
+        <script src="~/js/script.js"></script>
+    </div>
+</body>
+</html>
+

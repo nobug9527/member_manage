@@ -1,0 +1,525 @@
+﻿@model ViewModel.memberVO
+
+@{ 
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>会员管理</title>
+    <script src="~/js/jquery-1.8.2.min.js"></script> 
+    <script src="~/js/jquery1.11.3.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/test.js"></script>
+    <script src="~/js/jszip.min.js"></script>
+    <script src="~/js/FileSaver.js"></script>
+    <script src="~/js/excel-gen.js"></script>
+    <script src="~/js/demo.page.js"></script>
+    <style type="text/css">
+        body {
+        background:url("../Images/timg.jpg") no-repeat;
+        background-size:cover;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            margin: 0px;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+
+        //document.onkeydown = function(){
+        //    if(window.event&&window.event.keyCode==123){
+        //        alert("F12被禁用")
+        //        event.keyCode = 0 ; 
+        //        event.returnValue = false;
+        //    }
+        //}
+        
+
+        $(document).ready(function () {
+            window.onresize = function(){
+                var wid =parseInt($(document).width());
+                if(wid<500){
+                    $("body").css("font-size","10px");
+                    var wid =$("body").css('font-size');
+                }else{
+                    $("body").css("font-size","14px");
+                    var wid =$("body").css('font-size');
+                }
+            }
+
+            getconfig()
+            var len = $("#list1").find("tr").length-1;
+            for (i = 0; i < len; i++) {
+                var temp = $(".isuse").eq(i);
+                if (temp.text() == null || temp.text() == "") {
+                    $("input[value='消费']").eq(i).attr("class", "btn btn-primary");
+                    $("input[value='结账']").eq(i).attr("disabled", "disabled");
+                    $("input[value='结账']").eq(i).attr("class", "btn btn-default");
+                } else {
+                    $("input[value='结账']").eq(i).attr("class", "btn btn-primary");
+                    $("input[value='消费']").eq(i).attr("disabled", "disabled");
+                    $("input[value='消费']").eq(i).attr("class", "btn btn-default");
+                }
+            }
+
+
+            $('#myModal3').on('show.bs.modal', function () {
+                $.ajax({
+                    url: "/tools/submit_ajax.ashx?action=getoncemoney",
+                    type: "get",
+                    async: false,
+                    success: function (result) {
+                        var obj = eval('(' + result + ')');
+                        var oncemoney = obj.oncemoney;
+                        var ptmoney = obj.ptrate;
+                        $("input[name='rate1']").val(ptmoney);
+                        $("input[name='rate2']").val(oncemoney);
+                    }
+                })
+            })
+
+            $("input[name='phonenum']").focus(function () {
+                $("#phonemsg").html("");
+                $("#phonemsg1").html("");
+            })
+
+            $('#myModal').on('hidden.bs.modal', function () {
+                $("input[name='name']").val("");
+                $("input[name='phonenum']").val("");
+                $("input[name='born']").val("");
+                $("#phonemsg").html("");
+                $("#phonemsg1").html("");
+            })
+
+
+            $('#myModal1').on('hidden.bs.modal', function () {
+                $("input[name='name']").val("");
+                $("input[name='phonenum']").val("");
+                $("input[name='born']").val("");
+                $("#phonemsg").html("");
+                $("#phonemsg1").html("");
+            })
+
+            $('#myModal2').on('hidden.bs.modal', function () {
+                $("input[name='intomoney']").val("0");
+                $("#czcs").val("0");
+                $("#czjine").html("0");
+            })
+
+            $('#myModal4').on('hidden.bs.modal', function () {
+                $("#lackwarn").html("");
+            })
+
+            $('#myModal5').on('hidden.bs.modal', function () {
+                $("#jz_msg").html("");
+            })
+
+            $('#myModal7').on('hidden.bs.modal', function () {
+                getconfig()
+            })
+
+            $('#myModal7').on('show.bs.modal', function () {
+                getconfig()
+            })
+
+            $("#czcs").change(function () {
+                $.ajax({
+                    url: "/tools/submit_ajax.ashx?action=getoncemoney",
+                    type: "get",
+                    async: false,
+                    success: function (result) {
+                        var obj = eval('(' + result + ')');
+                        var oncemoney = obj.oncemoney;
+                        var count = $("#czcs").val();
+                        needmoney = parseInt(oncemoney) * parseInt(count);
+                        $("#czjine").html(needmoney);
+                    }
+                })
+            })
+
+        })
+
+        function checkphone() {
+            var panduan
+            var phonenum = $("input[name='phonenum']").val()
+            //var phonenum = $("input[name='phonenum']").eq(1).val();
+            $.ajax({
+                url: "/tools/submit_ajax.ashx?action=checkphone",
+                type: "post",
+                data:{phonenum:phonenum},
+                async: false,
+                success: function (result) {
+                    var obj = eval('(' + result + ')');
+                    if (obj.status == "999") {
+                        $("#phonemsg").html("手机号已被注册");
+                        panduan = false
+                    }
+                    else
+                    {
+                        $("#phonemsg").html("");
+                        panduan = true
+                    }
+                }
+            })
+            return panduan
+        }
+
+        function checkphone1() {
+            var panduan
+            var id = $("input[name='no']").val();
+            //var phonenum = $("input[name='phonenum']").val()
+            var phonenum = $("input[name='phonenum']").eq(1).val();
+            $.ajax({
+                url: "/tools/submit_ajax.ashx?action=checkphone",
+                type: "post",
+                data: { phonenum: phonenum ,id:id},
+                async: false,
+                success: function (result) {
+                    var obj = eval('(' + result + ')');
+                    if (obj.status == "999") {
+                        $("#phonemsg1").html("手机号已被注册");
+                        panduan = false
+                    }
+                    else {
+                        $("#phonemsg1").html("");
+                        panduan = true
+                    }
+                }
+            })
+            return panduan
+        }
+        function modify(id) {
+            $.ajax({
+                url: "/tools/submit_ajax.ashx?action=getmodifyinfo",
+                type: "post",
+                data: { id: id },
+                async: false,
+                success: function (result) {
+                    var obj = eval('(' + result + ')');
+                    $("input[name='name']").eq(1).val(obj.name);
+                    $("input[name='phonenum']").eq(1).val(obj.phonenum);
+                    $("input[name='born']").eq(1).val(obj.born);
+                    $("input[name='no']").val(id);
+                    if (obj.gender == "男") {
+                        $("input[name='gender'][value='男']").attr("checked", "checked")
+                    } else {
+                        $("input[name='gender'][value='女']").attr("checked", "checked")
+                    }
+                }
+
+            })
+            return true;
+        }
+
+        function xfvalidate() {
+            if ($("input[name='xftype']").val() == 1)
+                return true;
+            else {
+                if ($("input[name='xf_sycs']").val() <= 0) {
+                    $("#lackwarn").html("当前所剩次数不足！请充值后再试！");
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+
+        }
+
+        function invest(id, name, phonenum, balance, sycs) {
+                $("input[name='no']").eq(1).val(id);
+                $("input[name='name']").eq(2).val(name)
+                $("input[name='phonenum']").eq(2).val(phonenum)
+                $("input[name='balance']").val(balance)
+                $("input[name='sycs']").val(sycs)
+                $("input[name='xf_balance']").val(balance)
+                $("input[name='xf_sycs']").val(sycs)
+                $("input[name='xf_no']").val(id)  
+        }
+
+        function xiaofei(id, name, phonenum, balance, sycs,starttime){
+            if(starttime==""||starttime==null){
+                
+                $("input[name='no']").eq(1).val(id);
+                $("input[name='name']").eq(2).val(name)
+                $("input[name='phonenum']").eq(2).val(phonenum)
+                $("input[name='balance']").val(balance)
+                $("input[name='sycs']").val(sycs)
+                $("input[name='xf_balance']").val(balance)
+                $("input[name='xf_sycs']").val(sycs)
+                $("input[name='xf_no']").val(id)  
+                $('#myModal4').modal('show')
+            }
+            else{
+                return false;
+            }
+        }
+
+
+        function ShowAdd() {
+            $('#myModal').modal('show');
+        }
+        function HideAdd() {
+            $('#myModal').modal('hide');
+            $('#myModal1').modal('hide');
+            $('#myModal2').modal('hide');
+            $('#myModal3').modal('hide');
+            $('#myModal4').modal('hide');
+            $('#myModal5').modal('hide');
+            $('#myModal7').modal('hide');
+            $('#myModal8').modal('hide');
+            formajaxsuccess();
+        }
+
+        function formajaxsuccess() {
+            var len = $("#list1").find("tr").length - 1;
+            for (i = 0; i < len; i++) {
+                var temp = $(".isuse").eq(i);
+                if (temp.text() == null || temp.text() == "") {
+                    $("input[value='消费']").eq(i).attr("class", "btn btn-primary");
+                    $("input[value='结账']").eq(i).attr("disabled", "disabled");
+                    $("input[value='结账']").eq(i).attr("class", "btn btn-default");
+                } else {
+                    $("input[value='结账']").eq(i).attr("class", "btn btn-primary");
+                    $("input[value='消费']").eq(i).attr("disabled", "disabled");
+                    $("input[value='消费']").eq(i).attr("class", "btn btn-default");
+                }
+            }
+        }
+
+        function radioclick(temp) {
+            if (temp == 1) {
+                $("#xf_balance").focus();
+                $("input[name='xftype']").val(1)
+                $("#lackwarn").html("");
+            } else {
+                $("#xf_sycs").focus();
+                $("input[name='xftype']").val(2)
+                $("#lackwarn").html("");
+            }
+        }
+
+        function getjiezhang(no,starttime,phonenum,name,balance) {
+            $("input[name='jz_starttime']").val(starttime);
+            $("input[name='jz_phonenum']").val(phonenum);
+            $("input[name='jz_name']").val(name);
+            $("input[name='jz_balance']").val(balance);
+            $("input[name='jz_no']").val(no);
+            $.ajax({
+                url: "/tools/submit_ajax.ashx?action=getjzinfo",
+                type: "post",
+                data: {
+                    id: no,
+                    starttime:starttime
+                },
+                async: false,
+                success: function (result) {
+                    var obj = eval('(' + result + ')');
+                    $("input[name='jz_endtime']").val(obj.endtime);
+                    $("input[name='jz_totaltime']").val(obj.usetime)
+                    $("input[name='jz_money']").val(obj.totalmoney)
+                }
+            })
+            return true;
+        }
+
+        function checkjiezhang() {
+            balance = parseInt($("input[name='jz_balance']").val());
+            totalmoney = parseInt($("input[name='jz_money']").val());
+            if (balance < totalmoney) {
+                $("#jz_msg").html("余额不足,请充值后再重试");
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function clickrecord(no) {
+            $.ajax({
+                url: "/Member/RecordList"+"?id="+no,
+                type: "get",
+                async: false,
+                success: function (result) {
+                    //var obj = eval('(' + result + ')');
+                    //$("input[name='jz_endtime']").val(obj.endtime);
+                    //$("input[name='jz_totaltime']").val(obj.usetime)
+                    //$("input[name='jz_money']").val(obj.totalmoney)
+                    $("#recordList").html(result);
+                }
+            })
+        }
+
+        function getconfig(){
+            if(@ViewBag.zdxf==1){
+                $("#zdxf").prop('checked',true)
+            }else{
+                $("#zdxf").prop('checked',false)
+            }
+        }
+
+        function checkinvest(){
+            if($("input[name='intomoney']").val()==0&&$("#czcs").val()<=0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+        function test(){
+            window.location = "/Member/LogOut";
+        }
+
+        function modifypassword(){
+            var newpwd = $("input[name='newpwd']").val();
+            var conpwd = $("input[name='conpwd']").val();
+            console.log(newpwd);
+            console.log(conpwd);
+            if(newpwd!=conpwd){
+                $("#pwd_msg").html("两次输入秘密不一致，请重新输入！");
+                return false;
+            }
+            var obj
+            $.ajax({
+                url:"/tools/submit_ajax.ashx?action=modifypassword",
+                type:"post",
+                async:false,
+                data:{
+                    formpassword:$("input[name='oldpwd']").val()
+                },
+                success:function(result){
+                    obj = eval('('+result+')');
+                }
+            })
+            if(obj.status==2){
+                $("#pwd_msg").html("旧密码不对,请重新输入！");
+                return false;
+            }
+            return true;
+        }
+
+        function clearmsg(){
+            $("#pwd_msg").html("");
+        }
+
+
+</script>
+
+
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#menu">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">摇钱树会员管理</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Commodity/Index">商品消费</a></li>
+                    <li><a href="#">商品管理</a></li>
+                    <li class="active"><a href="/Member/Index">会员管理</a></li>
+                    <li><a href="/Record/Index">消费记录</a></li>
+                    <li><a href="/Income/Index">营业收入</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@ViewBag.username<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" data-toggle="modal" data-target="#myModal3" id="modrate">修改费率</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#myModal7">设置参数</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#myModal8">修改密码</a></li>
+                            <li><a href="/Home/test">测试</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li>@Html.ActionLink("退出登录","LogOut","Member")</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @*<div class="container">
+        @using (Ajax.BeginForm("List", "Member", new AjaxOptions() { UpdateTargetId = "memberlist", OnSuccess = "formajaxsuccess()" }))
+        {
+            <div class="form-inline row container">
+                <input type="text" id="search" placeholder="用户名或手机号,不输入时点击查询为显示全部" class="form-control"
+                       name="info" style="width:50%" />
+                <input type="submit" value="查询" class="btn btn-info" />
+                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">添加新会员</button>
+            </div>
+        }
+    </div>*@
+
+
+
+
+    <div class="container-fluid">
+
+        @using (Ajax.BeginForm("List", "Member", new AjaxOptions() { UpdateTargetId = "memberlist", OnSuccess = "formajaxsuccess()" }))
+        {
+            <div class="form-inline row container">
+                <input type="text" id="search" placeholder="用户名或手机号,不输入时点击查询为显示全部" class="form-control"
+                       name="info" style="width:50%" />
+                <input type="submit" value="查询" class="btn btn-info" />
+                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">添加新会员</button>
+                <button class="btn btn-primary" id="generate-excel">导出为excel表格</button>
+            </div>
+        }
+        <br />
+
+        <div id="memberlist">
+            @*@Html.Partial("~/Views/Member/List.cshtml")*@
+            @Html.Action("List", "Member")
+        </div>
+
+        <!--增加会员模态框-->
+        @Html.Action("AddModal", "Member")
+
+        <!--修改会员模态框-->
+        @Html.Action("ModifyModal", "Member")
+
+        <!--会员充值模态框-->
+        @Html.Action("InvestModal", "Member")
+
+        <!--修改费率-->
+        @Html.Action("RatesModal", "Member")
+
+        <!--消费-->
+        @Html.Action("xiaofeiModal", "Member")
+
+        <!--结账-->
+        @Html.Action("jiezhangModal", "Member")
+
+        <!--消费记录-->
+        @Html.Action("recordModal", "Member")
+
+        <!-- 设置参数-->
+        @Html.Action("configModal", "Member")
+
+        <!--修改密码-->
+        @Html.Action("modifypasswordModal","Member")
+    </div>
+</body>
+</html>

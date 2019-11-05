@@ -1,0 +1,209 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>营业收入</title>
+    <script src="~/js/jquery-1.8.2.min.js"></script>
+    <script src="~/js/jquery1.11.3.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/echarts.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#chartstype").change(function () {
+                var starttime = $("#starttime").val();
+                var endtime = $("#endtime").val();
+                var unit = $("#unittype").val();
+                var mychart = echarts.init(document.getElementById('chart'));
+                mychart.setOption({
+                    title: {
+                        text: '营业收入'
+                    },
+                    legend: {
+                        data: ['营收']
+                    },
+                    tooltip: {},
+                    xAxis: {
+                        data: []
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '营收',
+                        type:$("#chartstype").val(),
+                        data: []
+                    }]
+                });
+                //$.getJSON("/tools/submit_ajax.ashx?action=getoncemoney").done(function (result) {
+                $.getJSON("/Income/GetIncome", { "starttime": starttime, "endtime": endtime, "unit": unit}).done(function (result) {
+                    console.log(result)
+                    //var obj = eval('(' + result + ')');
+                    mychart.setOption({
+                        xAxis: {
+                            data: result.date
+                        },
+                        series: [{
+                            name: '营收',
+                            data: result.value
+                        }]
+                    })
+
+                })
+            })
+        })
+
+        function createcharts() {
+            var starttime = $("#starttime").val();
+            var endtime = $("#endtime").val();
+            var unit = $("#unittype").val();
+            var mychart = echarts.init(document.getElementById('chart'));
+            mychart.setOption({
+                title: {
+                    text: '营业收入'
+                },
+                legend: {
+                    data: ['营收']
+                },
+                tooltip: {},
+                xAxis: {
+                    data: []
+                },
+                yAxis: {},
+                series: [{
+                    name: '营收',
+                    type: $("#chartstype").val(),
+                    data: []
+                }]
+            });
+            //$.getJSON("/tools/submit_ajax.ashx?action=getoncemoney").done(function (result) {
+            $.getJSON("/Income/GetIncome",{"starttime":starttime,"endtime":endtime,"unit":unit}).done(function (result) {
+                //console.log(result)
+                //var obj = eval('(' + result + ')');
+                mychart.setOption({
+                    xAxis: {
+                        data: result.date
+                    },
+                    series: [{
+                        name: '营收',
+                        data: result.value
+                    }]
+                })
+
+            })
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#menu">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">摇钱树会员管理</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Commodity/Index">商品消费</a></li>
+                    <li><a href="#">商品管理</a></li>
+                    <li><a href="/Member/Index">会员管理</a></li>
+                    <li><a href="/Record/Index">消费记录</a></li>
+                    <li class="active"><a href="/Income/Index">营业收入</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    @*<div style="margin-left:auto;margin-right:auto" class="form-group">
+
+        <input type="date" class="form-group"/>
+        <select class="form-" style="width:33%;margin-left:60%" id="chartstype">
+            <option value="bar">柱状图</option>
+            <option value="line">折线图</option>
+            <option value="pie">饼状图</option>
+        </select>
+    </div>*@
+    <div class="form-inline">
+
+        <div class="form-group">
+            <label for="starttime">开始日期</label>
+            <input type="date" class="form-control" id="starttime">
+        </div>
+
+        <div class="form-group">
+            <label for="endtime">截至日期</label>
+            <input type="date" class="form-control" id="endtime">
+        </div>
+
+        <div class="form-group">
+            <select class="form-control" id="unittype">
+                <option value="day">按天</option>
+                <option value="month">按月</option>
+                <option value="year">按年</option>
+            </select>
+        </div>
+
+        <input type="button" value="生成图表" class="btn btn-primary" onclick="createcharts()"/>
+
+        <div class="form-group">
+            <select class="form-control" id="chartstype">
+                <option value="bar">柱状图</option>
+                <option value="line">折线图</option>
+                <option value="pie">饼状图</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="container" id="chart" style="width:1500px;height:800px;display:block">
+    </div>
+    <script type="text/javascript">
+        var mychart = echarts.init(document.getElementById('chart'));
+        mychart.setOption({
+                title: {
+                    text:'营业收入'
+                },
+                legend: {
+                    data:['营收']
+                },
+                tooltip: {},
+                xAxis: {
+                    data:[]
+                },
+                yAxis: {},
+                series: [{
+                    name: '营收',
+                    type: 'bar',
+                    data:[]
+                }]
+            });
+        //$.getJSON("/tools/submit_ajax.ashx?action=getoncemoney").done(function (result) {
+            $.getJSON("/Income/GetIncome").done(function (result) {
+                //console.log(result)
+                //var obj = eval('(' + result + ')');
+                mychart.setOption({
+                    xAxis: {
+                        data:result.date
+                    },
+                    series: [{
+                        name: '营收',
+                        data:result.value
+                    }]
+                })
+
+            })
+    </script>
+</body>
+</html>
