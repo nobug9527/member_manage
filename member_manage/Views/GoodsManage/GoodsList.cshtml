@@ -1,0 +1,29 @@
+﻿<table class="table table-bordered table-hover">
+    <tr>
+        <th>id</th>
+        <th>类别</th>
+        <th>名称</th>
+        <th>价格</th>
+        <th>余量</th>
+        <th>图片地址</th>
+        <th>操作</th>
+    </tr>
+    @foreach (var item in @Model.Rows)
+    {    
+        <tr class="info">
+            <td>@item["id"]</td>
+            <td>@item["typename"]</td>
+            <td>@item["goodsname"]</td>
+            <td>@item["price"]</td>
+            <td>@item["stock"]</td>
+            <td>@item["imageurl"]</td>
+            <td>
+                <div class="btn-group">
+                    <input type="button" value="进货" class="btn btn-success">
+                    <input type="button" value="编辑" class="btn btn-info">
+                    <input type="button" value="删除" class="btn btn-warning">
+                </div>
+            </td>
+        </tr>
+    }
+</table>

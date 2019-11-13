@@ -39,10 +39,6 @@
                 type: "get",
                 async: false,
                 success: function (result) {
-                    //var obj = eval('(' + result + ')');
-                    //$("input[name='jz_endtime']").val(obj.endtime);
-                    //$("input[name='jz_totaltime']").val(obj.usetime)
-                    //$("input[name='jz_money']").val(obj.totalmoney)
                     $("#RecordList").html(result);
                 }
             })
@@ -61,18 +57,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">摇钱树会员管理</a>
+                <a class="navbar-brand" href="#">摇钱树门店管理</a>
             </div>
 
             <div class="collapse navbar-collapse" id="menu">
                 <ul class="nav navbar-nav">
                     <li><a href="/Commodity/Index">商品消费</a></li>
-                    <li><a href="#">商品管理</a></li>
+                    <li><a href="/GoodsManage/Index">商品管理</a></li>
                     <li><a href="/Member/Index">会员管理</a></li>
                     <li class="active"><a href="/Record/Index">消费记录</a></li>
                     <li><a href="/Income/Index">营业收入</a></li>
                 </ul>
-
             </div>
         </div>
     </nav>

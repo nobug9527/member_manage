@@ -187,6 +187,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommodityController.cs" />
+    <Compile Include="Controllers\GoodsManageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncomeController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
@@ -363,6 +364,9 @@
     <Content Include="Views\Member\modifypassword.cshtml" />
     <Content Include="Views\Commodity\Index.cshtml" />
     <Content Include="Views\Commodity\CenterList.cshtml" />
+    <Content Include="Views\Commodity\RightContent.cshtml" />
+    <Content Include="Views\GoodsManage\Index.cshtml" />
+    <Content Include="Views\GoodsManage\GoodsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

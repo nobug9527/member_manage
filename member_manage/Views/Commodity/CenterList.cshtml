@@ -362,11 +362,12 @@
             $$(".menuItem[category='-1']").click();
         });
 </script>
-<script>
-    function addgood() {
-        
+@*<script>
+    function addgood(goodsname,price) {
+        console.log(goodsname)
+        console.log(price)
     }
-</script>
+</script>*@
 <div class="menu">
     @foreach (var item in @Model)
     {
@@ -382,12 +383,12 @@
                 <div class="title">@item[1]</div>
                 @foreach (var item1 in item[2].Rows)
                 {
-                    <div class="categoryItem" statisticevent="click" onclick="addgood()">
+                    <div class="categoryItem" statisticevent="click" onclick="addgood('@item1["goodsname"]',@item1["price"],@item1["id"],@item1["stock"])">
                         <div class="categoryIcon lazyLoad" data-original="/Images/乡巴佬.jpg"></div>
                         <div class="cursorArea"></div>
                         <span class="text">@item1["goodsname"]</span>
                         <span class="text">单价:@item1["price"]</span>
-                        <span class="text">剩余:@item1["allowance"]</span>
+                        <span class="text">剩余:@item1["stock"]</span>
                     </div>
                 }
             </div>

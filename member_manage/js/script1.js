@@ -1,7 +1,8 @@
-
+﻿
 var deleteGoods = null
 
 function ShoppingCarObserver(elInput, isAdd) {
+	console.log("运行了一次shoppingcarobserver");
 	this.elInput = elInput
 	this.parents = this.elInput.parents('.goods-item')
 	this.count = parseInt(this.elInput.val())
@@ -10,6 +11,7 @@ function ShoppingCarObserver(elInput, isAdd) {
 	this.computeGoodsMoney = function() {
 		var moneyCount = this.count * this.singlePrice
 		var singleTotalEl = this.parents.find('.single-total')
+		console.log(moneyCount)
 		singleTotalEl.empty().append(moneyCount)
 	}
 	this.showCount = function() {
@@ -131,7 +133,7 @@ $('#checked-all-bottom').on('change', function() {
 	}
 	checkedAll(this)
 })
-$(document).on('change','.goods-list-item', function() {
+$('.goods-list-item').on('change', function() {
 	var tmpCheckEl = $(this)
 	var checkEvent = new ShoppingCarObserver(tmpCheckEl, null)
 	checkEvent.checkedChange()
@@ -146,6 +148,7 @@ $('.goods-content').on('click', '.car-decrease', function() {
 $('.goods-content').on('click', '.car-add', function() {
 	var goodsInput = $(this).parents('.input-group').find('.goods-count')
 	var addCount = new ShoppingCarObserver(goodsInput, true)
+	console.log(addCount)
 	addCount.showCount()
 	addCount.computeGoodsMoney()
 })
